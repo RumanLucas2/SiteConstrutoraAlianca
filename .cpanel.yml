@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/crumanjr/repositories/SiteConstrutoraAlianca
-    - /bin/cp -R bkp_20211206 $DEPLOYPATH
+    - /bin/cp -R Site $DEPLOYPATH
