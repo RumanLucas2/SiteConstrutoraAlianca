@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+
+.jquery-selectbox {
+	position: relative;
+	height: 27px;
+	min-width: 100px;
+	z-index: 0;
+	float: left;
+	display: inline;
+	font-size: 9px;
+	font-family: Trebuchet MS, sans-serif;
+	color: #444;
+	padding: 0;
+	margin: 0;
+	background-image: url("../img/form_select_bg.png");
+}
+.jquery-selectbox.selecthover {
+	background-image: url("../img/form_select_bg.png");
+	z-index: 700;
+}	
+.jquery-selectbox .jquery-selectbox-currentItem {
+	padding: 3px 0px 0px 3px;
+	white-space: nowrap;
+	display: block;
+	overflow: hidden;
+}
+
+.jquery-selectbox .jquery-selectbox-list {
+	display: none;
+	position: absolute;
+	top: 27px;
+	left: 0px;
+	background: #F0F0F0;
+	min-width: 100px;
+	overflow-y: auto;
+	z-index: 1000;
+}
+.jquery-selectbox .jquery-selectbox-moreButton {
+	/*
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	*/
+	float: right;
+	background: url("../img/form_select_bt.png") no-repeat top;
+	width: 27px;
+	height: 27px;
+}
+.jquery-selectbox .jquery-selectbox-moreButton.morebuttonhover {
+	background: url("../img/form_select_bt.png") no-repeat bottom;
+}
+
+.jquery-selectbox .jquery-selectbox-item.listelementhover {
+	background: #666;
+	color: #eee;
+}
+.jquery-selectbox .jquery-selectbox-item {
+	display: block;
+	cursor: default;
+	padding: 3px;
+}
+
+/** ERROR classes **/
+form .error .jquery-selectbox {
+	color: #d00;
+	border-color: #d00;
+	background-image: url("../img/bg-TextFieldError.gif");
+}
