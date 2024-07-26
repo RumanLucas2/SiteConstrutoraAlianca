@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/crumanjr/public_html/Site/
-    - /bin/cp -R images $DEPLOYPATH
+    - /bin/cp -R bkp_20211206 $DEPLOYPATH
