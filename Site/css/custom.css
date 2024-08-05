@@ -19,7 +19,7 @@ a,button{outline: 0 !important;}
 a:hover,a:focus{ text-decoration: none}
 
 /* All Transition */
-.list-inline.info a, .btn,.list-inline.social_icon a,nav.navbar.bootsnav ul.nav > li > a,.attr-nav > ul > li > a,.btn.know_btn,#filters > button,.portfolio_hover_area,.portfolio_hover_area .fa,.testimonial_content,.testimonial_content p:first-child::before,#contact_form .form-control,#contact_form .btn.submit_btn,footer a,.footer_social_icon .fa,.post .date,#scrollUp{
+.list-inline.info a, .factorial, .img-sell, .btn,.list-inline.social_icon a,nav.navbar.bootsnav ul.nav > li > a,.attr-nav > ul > li > a,.btn.know_btn,#filters > button,.portfolio_hover_area,.portfolio_hover_area .fa,.testimonial_content,.testimonial_content p:first-child::before,#contact_form .form-control,#contact_form .btn.submit_btn,footer a,.footer_social_icon .fa,.post .date,#scrollUp{
     transition: all 0.4s ease;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
@@ -399,6 +399,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
 .grid-item:hover img{
     transform: scale(1.1);
 }
+
 .grid-item img{
     height: 100%;
     -webkit-transition: all 0.6s;
@@ -430,6 +431,18 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     margin-top: 215px;
     padding: 15px;
     border:1px solid transparent;
+}
+.img-sell{
+    width: auto; 
+    height: 278px ; 
+    border-radius: 5%;
+    border:6px solid transparent;
+}
+
+.img-sell:hover{
+    transform: scale(1.1);
+    background-color:#f70511;
+    background-size: 2px;
 }
 .grid-item .portfolio_hover_area .fa {
     margin-top: 90px;
@@ -631,9 +644,7 @@ footer::after {
 }
 .footer_social_icon .fa {
     border-radius: 100%;
-    font-size: 20px;
     height: 45px;
-    padding: 12px;
     text-align:center;
     width: 45px;
 }
@@ -643,30 +654,48 @@ footer::after {
 .facebook{
     color: white;
     background: #1877F2;
+    font-size: 20px;
+    padding: 12px;
 }
 
 .insta{
     background: radial-gradient(circle at bottom left, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
     color: white;
+    font-size: 20px;
+    padding: 12px;
+
 }
 
 .wpp{
     color: white;
     background: #1eaf54;
+    font-size: 25px;
+    line-height:165%;
 }
 
 .tell{
     color: white;
-    text-shadow: #035fd7; 
-    background: #1877F2;
+    background: #1eaf54;
+    font-size: 23px;
+    line-height:190%;
+
 }
 
 .mail{
     color: white;
     background: #1877F2;
+    font-size: 20px;
+    padding: 12px;
+
 }
 
-
+.factorial{
+    color: #484848;
+}
+.factorial:hover{
+    filter: brightness(1.1);
+    color:currentColor;
+}
 /* Footer Explore */
 .footer_menu .fa {
     font-size: 10px;
