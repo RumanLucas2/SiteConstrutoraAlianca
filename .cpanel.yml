@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/crumanjr/repositories/SiteConstrutoraAlianca
+    - export DEPLOYPATH=/home/crumanjr/repositories/SiteConstrutoraAlianca/
     - /bin/cp -R Site $DEPLOYPATH
     - /bin/cp -R palazzoroyale $DEPLOYPATH
