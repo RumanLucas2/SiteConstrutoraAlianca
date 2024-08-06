@@ -1,5 +1,14 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/crumanjr/public_html/
-    - /home/crumanjr/repositories/SiteConstrutoraAlianca -R Site $DEPLOYPATH
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    - name: Set deploy path
+      run: echo "DEPLOYPATH=/home/crumanjr/public_html/" >> $GITHUB_ENV
+
+    - name: Copy files
+      run: /bin/cp -R Site/* $DEPLOYPATH
