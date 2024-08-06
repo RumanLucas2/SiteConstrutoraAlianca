@@ -773,7 +773,7 @@ footer::after {
     .container{ width: 1200px;}
     .carousel-inner > .item > a > img, .carousel-inner > .item > img {
         height: auto;
-        width: calc(max-content*0.7);
+        width: 1200px;
     }
     .carousel-caption {
         left: 18%;
@@ -838,6 +838,7 @@ footer::after {
     }
     .img-sell:hover, .img-sell:focus{
         filter: brightness(1.1);
+        scale: 1;
     }
 }
 
@@ -891,8 +892,6 @@ footer::after {
     #contact_form .btn.submit_btn {
         width: 168px;
     }
-
-
 }
 
 @media (max-width: 767px) {
