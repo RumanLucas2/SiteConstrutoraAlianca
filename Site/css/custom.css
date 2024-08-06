@@ -768,12 +768,12 @@ footer::after {
 #scrollUp:hover {
     background: url(../images/top.png)no-repeat scroll 0 -40px;
 }
-
 /* Responsive Styles for various devices */
 @media (min-width: 1600px) {
     .container{ width: 1200px;}
     .carousel-inner > .item > a > img, .carousel-inner > .item > img {
-        height: 740px;
+        height: auto;
+        width: calc(max-content*0.7);
     }
     .carousel-caption {
         left: 18%;
@@ -800,8 +800,8 @@ footer::after {
         font-size: 25px;
     }
     .carousel-inner > .item > a > img, .carousel-inner > .item > img {
-        height: 550px;
-        width: auto;
+        height: auto;
+        width: calc(max-content *0.9);
     }
     .carousel-caption {
         left: 3%;
@@ -836,8 +836,9 @@ footer::after {
     #contact_form .btn.submit_btn {
         width: 95px;
     }
-
-
+    .img-sell:hover, .img-sell:focus{
+        filter: brightness(1.1);
+    }
 }
 
 @media (max-width: 991px) {
