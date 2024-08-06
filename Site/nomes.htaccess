@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^HomePage$ index.html [L]
+RewriteRule ^Nossas_Obras$ projetos.html [L]
