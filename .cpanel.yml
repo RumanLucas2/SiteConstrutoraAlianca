@@ -1,5 +1,4 @@
 deployment:
   tasks:
-    - shell: |
-        export DEPLOYPATH=/home/crumanjr/public_html
-        /home/crumanjr/repositories/SiteConstrutoraAlianca -R Site/* $DEPLOYPATH
+    - export DEPLOYPATH=/home/crumanjr/public_html
+    - /home/crumanjr/repositories/SiteConstrutoraAlianca -R Site/* $DEPLOYPATH
