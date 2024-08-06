@@ -1,6 +1,0 @@
-
-RewriteEngine on
-RewriteCond %{HTTP_HOST} ^gssegundavia\.com\.br$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.gssegundavia\.com\.br$
-RewriteRule ^/?$ "http\:\/\/www\.construtoraalianca\.com\.br\/" [R=301,L]
-
