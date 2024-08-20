@@ -32,9 +32,7 @@
         <![endif]-->
     </head>
     <body>
-
         <!-- Preloader -->
-
         <div id="loading">
             <div id="loading-center">
                 <div id="loading-center-absolute">
@@ -61,10 +59,9 @@
             <div class="top_nav">
                 <div class="container">
                     <ul class="list-inline info">
-                        
                     </ul>
                     <ul class="list-inline social_icon">
-                        <li class="social_icon_facebook"><a href="https://www.facebook.com/construtoralianca" target="_blank"><span class="fa fa-facebook"></span></a></li>
+                        <li><a href="https://www.facebook.com/construtoralianca" target="_blank"><span class="fa fa-facebook"></span></a></li>
                         <li><a href="https://www.instagram.com/aliancaconstrutora" target="_blank"><span class="fa fa-instagram"></span></a></li>
                         <li><a href="https://api.whatsapp.com/send?phone=5519989152390&text=Ola, Fiquei interessado na empresa e gostaria de saber mais" target="_blank"><span class="fa fa-whatsapp"></span></a></li>
                         <li><a href="tel:+551938258969" target="_blank"><span class="fa fa-phone"></span></a></li>
@@ -131,20 +128,20 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
                         <div class="why_us_item">
-                            <a href="projetos.html" target="_self" class="factorial"><span class="fa fa-home"></span></a>
-                            <h4>Obras Residenciais</h4>
+                            <a id="casas" class="factorial"><span class="fa fa-home"></span></a>
+                            <h4>Residenciais</h4>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="why_us_item">
                             <a href="projetos.html" target="_self" class="factorial"><span class="fa fa-building" href="projetos.html"></span></a>
-                            <h4>Obras de Edif&iacute;cio</h4>
+                            <h4>Edif&iacute;cio</h4>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="why_us_item">
                             <a href="projetos.html" target="_self" class="factorial"><span class="fa fa-industry"></span></a>
-                            <h4>Obras Industriais</h4>
+                            <h4>Industriais</h4>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -157,7 +154,26 @@
             </div>
         </section>
 		<!-- Portfolio end -->
-		 
+        <div id="sectionEncoded" style="display: none;">
+            <div class="CardObra-container">
+                <div class="CardObra">
+                    <div class="left-box">
+                        <!-- Área esquerda -->
+                        <img src="images/Obras/Pinheiros_W02/capa Pos.jpg">
+                    </div>
+                    <div class="right-box">
+                        <div class="text">
+                            <h2>Texto de exemplo</h2>
+                            <p>Descri&ccedil;&atilde;o</p>
+                        </div>
+                        <div class="buttons">
+                            <a href="https://api.whatsapp.com/send?phone=5519989152390&amp;text=Ola, fiquei interessado na casa do Villa dos Pinheiros W02 à venda no seu site, posso saber mais" id="btn-venda">Bot&atilde;o Venda</a>
+                            <a href="5.html" id="btn-visita">Bot&atilde;o Visita</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<!-- Footer -->
         <footer id="footer">
             <!-- Footer top -->
@@ -168,7 +184,6 @@
                             <h4>Sobre a Empresa</h4>
                             <img class="logo" src="images/logo_size1.png" alt="Construction" />
                             <p>O nome Alian&ccedil;a foi escolhido para simbolizar o v&iacute;nculo que constru&iacute;mos e mantemos com nossos clientes. Assim, a empresa executa servi&ccedil;os de Gest&agrave;o de obras, Engenharia e constru&ccedil;&atilde;o focada exclusivamente no segmento alto padr&atilde;;o, com modelo de gest&atilde;o financeira e acompanhamento diferenciados, acabamento primoroso, qualidade nos materiais, qualidade na m&atilde;o-de-obra e pontualidade na entrega.</p>
-
                             <ul class="list-inline footer_social_icon">
                                 <li><a href="https://www.facebook.com/construtoralianca" target="_blank"><i class="fa fa-facebook-f facebook"></i></a></li>
                                 <li><a href="https://api.whatsapp.com/send?phone=5519989152390&text=Ola, Fiquei interessado na empresa e gostaria de saber mais" target="_blank"><span class="fa fa-whatsapp wpp"></span></a></li>
@@ -190,7 +205,9 @@
                 </div>
             </div><!-- Footer top end -->
             <br>
+            
         <!-- JavaScript -->
+        <script src="js/Server.js"></script>
         <script src="js/jquery-1.12.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
 
@@ -205,6 +222,7 @@
         <script src="js/jquery.scrollUp.min.js"></script>
 
         <script src="js/main.js"></script>
+        
         <!-- Detector de OS-->
-        </body>	
+    </body>	
 </html>	
