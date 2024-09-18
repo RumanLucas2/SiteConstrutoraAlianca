@@ -51,13 +51,3 @@ jQuery(document).ready(function ($) {
 });
 
 
-document.getElementById('casas').addEventListener('click', function() {
-    var secao = document.getElementById('sectionEncoded');
-    if (secao.style.display === 'none') {
-        secao.style.display = 'block';
-        document.getElementById('casas').style = 'filter: invert()';
-    } else {
-        secao.style.display = 'none';
-        document.getElementById('casas').style = 'filter: none';
-    }
-});
