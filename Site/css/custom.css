@@ -441,6 +441,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     max-height: 300px;
     min-height: 255px;
     height: 255px;
+    overflow: hidden;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -o-transition: all 0.2s;
