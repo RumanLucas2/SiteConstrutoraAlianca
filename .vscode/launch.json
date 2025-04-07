@@ -1,0 +1,15 @@
+{
+
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "pwa-msedge",
+            "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+            "browserLaunchLocation": null,
+            "request": "launch",
+            "name": "Launch Brave",
+            "file": "c:\\Users\\lucas\\OneDrive\\Documentos\\GitHub\\SiteConstrutoraAlianca\\Site"
+        }
+    ]
+}
