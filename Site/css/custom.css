@@ -374,6 +374,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     position:relative;
     padding-bottom: 102px;
 }
+
 #portfolio::before{
     position:absolute;
     content:"";
@@ -382,11 +383,13 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     top:0;
     left:0;
     opacity: 60%;
+
 }
 .portfolio_area{ 
     position:relative;
     background:#f7f7ff;
 }
+
 .portfolio_area h2 {
     color: #000000;
     margin: 65px 0 34px;
@@ -445,6 +448,7 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
 .grid-item h3{
     height: 15px;
 }
+
 .grid-item img{
     border: 10px solid transparent;
     border-radius: 20px;
