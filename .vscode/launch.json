@@ -4,12 +4,12 @@
     "configurations": [
         
         {
-            "type": "pwa-msedge",
+            "type": "chrome",
             "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
             "browserLaunchLocation": null,
             "request": "launch",
             "name": "Launch Brave",
-            "file": "c:\\Users\\lucas\\OneDrive\\Documentos\\GitHub\\SiteConstrutoraAlianca\\Site"
+            "file": "c:\\Users\\lucas\\OneDrive\\Documentos\\GitHub\\SiteConstrutoraAlianca\\Site\\Pages\\Auxiliares\\index.html",
         }
     ]
 }

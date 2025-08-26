@@ -314,9 +314,6 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
 .about_content .btn.know_btn {
     margin: 18px 0 60px;
 }
-.about_bg {
-    background: url(../images/about_bg.png)no-repeat right;
-}
 
 /*Head Title*/
 .head_title p{
@@ -333,12 +330,26 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     margin: 70px 0 20px;
 }
 .why_us_item{ padding-top: 55px;}
-#why_us .fa{
-    border-radius: 100%;
-    box-shadow: 0 0 0 10px #c02027, 0 0 0 20px #c0202796, 0 0 0 30px #c0202763;
-    padding: 38px;
-    font-size:45px;
+#why_us .fa {
+    display: flex;                /* centraliza conteúdo */
+    align-items: center;
+    justify-content: center;
+
+    width: 120px;                 /* largura fixa */
+    height: 120px;                /* altura igual -> vira círculo */
+    border-radius: 50%;           /* 100% vira círculo perfeito */
+    background: #fff;             /* fundo branco dentro do círculo */
+
+    font-size: 45px;              /* tamanho do ícone */
+    color: #333;                  /* cor do ícone */
+
+    box-shadow: 
+        0 0 0 10px #c02027, 
+        0 0 0 20px #c0202796, 
+        0 0 0 30px #c0202763;
+    margin: 0 auto;               /* centraliza no container */
 }
+
 .why_us_item > h4 {
     font-size: 15px;
     margin: 60px 0 20px;
@@ -487,6 +498,8 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
 }
 .grid-item .portfolio_hover_area .fa {
     margin-top: 90px;
+    height: 60px !important;
+    width: 60px !important;
 }
 .grid-item--width2 .portfolio_hover_area .fa {
     margin-top: 217px;
@@ -555,10 +568,12 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
     align-items: center;
     cursor: pointer;
 }
+
 .Video-Player > img{
     max-width: 90%;
     border-radius: 10px;
     align-self: center;
+    border:#000 solid medium;
 }
 
 
@@ -583,6 +598,8 @@ text-align:center;
     -moz-border-radius: 5px;
     color: #fff;
     font-size: 30px;
+    height: 60px !important;
+    width: 60px !important;
     padding: 15px;
     border:1px solid transparent;
 }
@@ -774,49 +791,44 @@ footer::after {
 .footer_social_icon .fa {
     border-radius: 100%;
     height: 45px;
-    text-align:center; 
+    text-align:center !important; 
     width: 45px;
 }
 .fa:hover, .fa:focus{
     filter: brightness(1.4);
 }
-.facebook{
-    color: white;
-    background: #1877F2;
-    font-size: 20px;
-    padding: 12px;
+
+.topItem{
+    font-size: 20px !important;
 }
 
-.insta{
-    background: radial-gradient(circle at bottom left, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-    color: white;
-    font-size: 20px;
-    padding: 12px;
-
+/* BASE ÚNICA para todos os ícones */
+.social {
+  --size: 50px;                      /* diâmetro do círculo (ajuste aqui) */
+  width: var(--size);
+  height: var(--size);
+  display: inline-flex;              /* agora align-items funciona */
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  line-height: 1;                    /* evita “puxar” pelo baseline da fonte */
+  vertical-align: middle;            /* alinha entre si na linha */
+  font-size: calc(var(--size) * 0.42); /* tamanho do glifo relativo ao círculo */
+  color: #fff;
 }
 
-.wpp{
-    color: white;
-    background: #1eaf54;
-    font-size: 25px;
-    line-height:165%;
-}
+/* só cores/fundos por rede */
+.facebook { background:#1877F2; }
+.wpp      { background:#1eaf54; }
+.insta    { background: radial-gradient(circle at 30% 107%,
+               #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.tell     { background:#1eaf54; }
+.mail     { background:#1877F2; }
+.youtube  { background:#FF0000; }
 
-.tell{
-    color: white;
-    background: #1eaf54;
-    font-size: 23px;
-    line-height:190%;
+/* pequenos ajustes óticos (opcional) */
+.wpp, .insta { font-size: calc(var(--size) * 0.58); } /* Whats/Instagram tendem a parecer maiores */
 
-}
-
-.mail{
-    color: white;
-    background: #1877F2;
-    font-size: 20px;
-    padding: 12px;
-
-}
 
 
 #project {
@@ -833,10 +845,23 @@ footer::after {
     color: #484848;
 }
 #project .fa{
-    border-radius: 100%;
-    box-shadow: 0 0 0 10px #c02027, 0 0 0 20px #c0202796, 0 0 0 30px #c0202763;
-    padding: 38px;
-    font-size:45px;
+    display: flex;                /* centraliza conteúdo */
+    align-items: center;
+    justify-content: center;
+
+    width: 120px;                 /* largura fixa */
+    height: 120px;                /* altura igual -> vira círculo */
+    border-radius: 50%;           /* 100% vira círculo perfeito */
+    background: #fff;             /* fundo branco dentro do círculo */
+
+    font-size: 45px;              /* tamanho do ícone */
+    color: #333;                  /* cor do ícone */
+
+    box-shadow: 
+        0 0 0 10px #c02027, 
+        0 0 0 20px #c0202796, 
+        0 0 0 30px #c0202763;
+    margin: 0 auto;    
 }
 
 .fact > h4 {

@@ -60,21 +60,26 @@ const iframe = document.getElementById('video-iframe');
 const HomeVideo = document.getElementById('HomeVideo');
 
 // Abrir o PopUp ao clicar no botão
-openBtn.addEventListener('click', function() {
-    popup.style.display = 'flex';
-    iframe.src = 'https://www.youtube.com/embed/zR9F_TN2b50?autoplay=1'; // URL do vídeo
-});
+if (openBtn)
+    openBtn.addEventListener('click', function() {
+        popup.style.display = 'flex';
+        iframe.src = 'https://www.youtube.com/embed/zR9F_TN2b50?autoplay=1'; // URL do vídeo
+    });
+
+
 
 // Fechar o PopUp ao clicar no botão de fechar
-closeBtn.addEventListener('click', function() {
-    popup.style.display = 'none';
-    iframe.src = ''; // Para parar o vídeo quando o PopUp for fechado
-});
+if (closeBtn)
+    closeBtn.addEventListener('click', function() {
+        popup.style.display = 'none';
+        iframe.src = ''; // Para parar o vídeo quando o PopUp for fechado
+    });
 
 // Fechar o PopUp ao clicar fora do vídeo
-popup.addEventListener('click', function(e) {
-    if (e.target == popup) {
-        popup.style.display = 'none';
-        iframe.src = ''; // Para parar o vídeo
-    }
-});
+if (popup)
+    popup.addEventListener('click', function(e) {
+        if (e.target == popup) {
+            popup.style.display = 'none';
+            iframe.src = ''; // Para parar o vídeo
+        }
+    });
