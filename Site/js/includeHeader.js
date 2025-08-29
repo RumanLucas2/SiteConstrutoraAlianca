@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="index.html"><img class="logo" src="../../images/logo.png" alt=""></a>
+                    <a class="navbar-brand" href="../Auxiliares/index.html"><img class="logo" src="../../images/logo.png" alt=""></a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav menu">
