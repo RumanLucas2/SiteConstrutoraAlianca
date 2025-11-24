@@ -1,0 +1,41 @@
+﻿.ui-smoothMenu-disabled * {
+	cursor: default;
+}
+
+.ui-smoothMenu-item {
+	position: relative;
+}
+
+.smooth_menu {
+}
+
+.smooth_menu > li a {
+	display: block;
+}
+
+.smooth_menu > li ul,
+#ui_smooth_menu_container > div > ul {
+	float: left;
+	white-space: nowrap;		
+}
+
+#ui_smooth_menu_container > div > ul > li > a {
+	text-decoration:none;
+	display:block;
+	padding: 10px 30px;
+	color: #FFF;
+	background: #444 url('../img/menu_shadow_bg.png') repeat-y left top;	
+	text-align:left;
+	font-size: 12px;	
+}
+
+#ui_smooth_menu_container > div > ul > li > a:hover {
+	color: #FFF;
+	background: #099999;
+}
+
+ul.clearfix:after {
+	content: "";
+	display: block;
+	clear: both;
+}
