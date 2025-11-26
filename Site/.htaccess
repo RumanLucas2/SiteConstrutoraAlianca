@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /
+
+# Friendly alias: expose the home page at /Home
+RewriteRule ^Home$ Pages/Auxiliares/index.html [L]
+
+# Redirect the verbose path to the friendly one so the URL shows /Home
+RewriteRule ^Pages/Auxiliares/index\.html$ /Home [L,R=301]

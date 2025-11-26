@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/crumanjr/public_html
-    - /bin/cp -R Site/* $DEPLOYPATH
+    - /bin/cp -a Site/. $DEPLOYPATH

@@ -192,7 +192,7 @@
         }
 
         function fetchStatus(){
-            return fetch('../../auth.php?action=status').then(function(res){
+            return fetch('../../Admin/auth.php?action=status').then(function(res){
                 if (!res.ok) throw new Error('auth');
                 return res.json();
             });
@@ -200,7 +200,7 @@
 
         function verifyTwofa(code){
             var body = 'twofa=' + encodeURIComponent(code || '');
-            return fetch('../../auth.php?action=verify2fa', {
+            return fetch('../../Admin/auth.php?action=verify2fa', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: body
@@ -211,7 +211,7 @@
         }
 
         function loadServerConfig(){
-            return fetch('../../auth.php?action=config').then(function(res){
+            return fetch('../../Admin/auth.php?action=config').then(function(res){
                 if (!res.ok) throw new Error('config');
                 return res.json();
             }).then(function(cfg){
@@ -230,7 +230,7 @@
                 currentCode: (twofaCurrent && twofaCurrent.value) || '',
                 contact: (contactInput && contactInput.value) || ''
             };
-            return fetch('../../auth.php', {
+            return fetch('../../Admin/auth.php', {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -295,7 +295,7 @@
                     return;
                 }
                 twofaStatus.textContent = 'Enviando teste...';
-                fetch('../../auth.php?action=sendTest', {
+                fetch('../../Admin/auth.php?action=sendTest', {
                     method:'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     body:'provider=' + encodeURIComponent(provider) + '&contact=' + encodeURIComponent(contact)
@@ -444,7 +444,7 @@
 
         function fetchWorks(){
             setWorksStatus('Carregando...');
-            fetch('../../obras-admin.php?action=list')
+            fetch('../../Admin/obras-admin.php?action=list')
                 .then(function(res){ return res.json().then(function(j){ return {ok:res.ok, body:j};}); })
                 .then(function(resp){
                     if (!resp.ok || !resp.body || !resp.body.ok) {
@@ -460,7 +460,7 @@
 
         function sendWorkAction(action, payload){
             setWorksStatus('Salvando...');
-            return fetch('../../obras-admin.php?action=' + action, {
+            return fetch('../../Admin/obras-admin.php?action=' + action, {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body: JSON.stringify(payload || {})

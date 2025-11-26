@@ -5,7 +5,7 @@ const ADMIN_PASS = process.env.ADMIN_PASS || 'admin';
 const BASE_URL = process.env.BASE_URL || 'http://localhost:8081';
 
 async function loginAndGetStorageState(api: APIRequestContext) {
-  const res = await api.post(`${BASE_URL}/auth.php`, {
+  const res = await api.post(`${BASE_URL}/Admin/auth.php`, {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     form: { user: ADMIN_USER, pass: ADMIN_PASS },
   });

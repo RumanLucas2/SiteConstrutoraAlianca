@@ -3,12 +3,12 @@
 ## Pré‑requisitos
 - PHP com sessões habilitadas, extensões padrão e permissão de escrita em `Site/data`, `Site/images/Obras/*` e `Site/Pages/*`.
 - Navegador com cookies habilitados.
-- Usuário e senha válidos configurados no backend (`auth.php`).
+- Usuário e senha válidos configurados no backend (`Admin/auth.php`).
 
 ## Fluxos de Autenticação
 1) **Login sem 2FA ativo**
    - Acessar modal admin no site público, fazer login com credenciais válidas.
-   - Esperado: redireciona para `admin-obra.html` sem exigir código; `obras-admin.php?action=list` responde 200.
+   - Esperado: redireciona para `admin-obra.html` sem exigir código; `Admin/obras-admin.php?action=list` responde 200.
 2) **Login com 2FA ativo (totp ou email)**
    - Ativar 2FA em `admin-config.html`, salvar.
    - Fazer logout (limpar sessão), login novamente.
@@ -44,10 +44,10 @@
 
 ## Segurança
 12) **Sem sessão admin**
-    - Chamar `obras-admin.php?action=list` sem login.
+   - Chamar `Admin/obras-admin.php?action=list` sem login.
     - Esperado: 401/erro “unauthorized”.
 13) **2FA exigido**
-    - Com 2FA ativo e `twofa_valid` ausente, chamar `obras-admin.php?action=list`.
+    - Com 2FA ativo e `twofa_valid` ausente, chamar `Admin/obras-admin.php?action=list`.
     - Esperado: 401/erro “unauthorized”.
 14) **Sem token HTML**
     - Confirmar que chamadas não dependem de cabeçalho cliente; apenas sessão backend.

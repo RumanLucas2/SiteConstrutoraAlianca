@@ -116,13 +116,16 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const user = (form.user && form.user.value || '').trim();
             const pass = (form.pass && form.pass.value) || '';
-            fetch('../../auth.php', {
+            fetch('../../Admin/auth.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'user=' + encodeURIComponent(user) + '&pass=' + encodeURIComponent(pass)
             }).then(function(res){
                 if (res.ok) {
-                    // Sessao backend ja valida; nenhum token HTML � gerado no cliente
+                    try {
+                        var payload = { ts: Date.now(), ua: navigator.userAgent };
+                        sessionStorage.setItem('adminToken', btoa(JSON.stringify(payload)));
+                    } catch(err) {}
                     window.location.href = "../Auxiliares/admin-obra.html";
                     return;
                 }
@@ -150,3 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+

@@ -45,7 +45,7 @@
                     <h2>Nova Obra</h2>
                     <p>Escolha o tipo, envie as fotos e nomeie o projeto.</p>
                 </div>
-                <a class="btn-ghost" href="./admin-config.html" style="margin-left:auto; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                <a class="btn-ghost" id="configLink" href="./admin-config.html" style="margin-left:auto; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
                     <i class="fa fa-cog"></i><span>Configurações</span>
                 </a>
             </header>
@@ -93,6 +93,12 @@
         function redirectHome(){
             window.location.href = '../Auxiliares/index.html';
         }
+        function ensureFrontToken(){
+            try{
+                var payload = { ts: Date.now(), ua: navigator.userAgent };
+                sessionStorage.setItem('adminToken', btoa(JSON.stringify(payload)));
+            }catch(err){}
+        }
 
         var adminPage = document.getElementById('adminPage');
         var adminContent = document.getElementById('adminContent');
@@ -112,7 +118,7 @@
         }
 
         function fetchStatus(){
-            return fetch('../../auth.php?action=status').then(function(res){
+            return fetch('../../Admin/auth.php?action=status').then(function(res){
                 if (!res.ok) throw new Error('auth');
                 return res.json();
             });
@@ -120,7 +126,7 @@
 
         function verifyTwofa(code){
             var body = 'twofa=' + encodeURIComponent(code || '');
-            return fetch('../../auth.php?action=verify2fa', {
+            return fetch('../../Admin/auth.php?action=verify2fa', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: body
@@ -164,7 +170,18 @@
         const nomeInput = document.getElementById('nome');
         const tipoSelect = document.getElementById('tipo');
         const fotosInput = document.getElementById('fotos');
+        const configLink = document.getElementById('configLink');
         let sending = false;
+        if (configLink) {
+            configLink.addEventListener('click', function(e){
+                e.preventDefault();
+                ensureFrontToken();
+                fetch('../../Admin/auth.php?action=status', { credentials: 'include' })
+                    .finally(function(){
+                        window.location.href = configLink.getAttribute('href');
+                    });
+            });
+        }
 
         function setStatus(msg, isError, allowHtml){
             if (!obraStatus) return;
@@ -205,7 +222,7 @@
                 sending = true;
                 setStatus('Enviando e publicando...');
 
-                fetch('../../obra.php', {
+                fetch('../../Admin/obra.php', {
                     method: 'POST',
                     body: fd
                 }).then(function(res){

@@ -1,18 +1,38 @@
 <?php
 session_start();
 
-const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'senhaSegura123';
-const DATA_DIR   = __DIR__ . '/data';
+$ROOT_DIR = dirname(__DIR__);
+define('ROOT_DIR', $ROOT_DIR);
+$DEFAULT_ADMIN_USER = 'admin';
+$DEFAULT_ADMIN_PASS = 'senhaSegura123';
+const DATA_DIR   = ROOT_DIR . '/data';
 const TFA_FILE   = DATA_DIR . '/2fa-config.json';
 const LOG_FILE   = DATA_DIR . '/notifications.log';
-if (!isset($_SERVER['SERVER_NAME']) || $_SERVER['SERVER_NAME'] === '127.0.0.1') {
-    file_put_contents(__DIR__ . '/data/notifications.log', '');
-}
-const MAIL_CFG   = __DIR__ . '/config/mail.json';
+const MAIL_CFG   = ROOT_DIR . '/config/mail.json';
 
 if (!is_dir(DATA_DIR)) {
     mkdir(DATA_DIR, 0775, true);
+}
+if (!isset($_SERVER['SERVER_NAME']) || $_SERVER['SERVER_NAME'] === '127.0.0.1') {
+    @file_put_contents(LOG_FILE, '');
+}
+
+function loadAppConfig(): array {
+    if (!file_exists(MAIL_CFG)) {
+        return [];
+    }
+    $json = file_get_contents(MAIL_CFG);
+    $data = json_decode($json, true);
+    return is_array($data) ? $data : [];
+}
+
+function getAdminCredentials(): array {
+    $config = loadAppConfig();
+    $admin = is_array($config['admin'] ?? null) ? $config['admin'] : [];
+    // Prioridade: variáveis de ambiente > JSON > padrão
+    $user = getenv('ADMIN_USER') ?: ($admin['login'] ?? $GLOBALS['DEFAULT_ADMIN_USER']);
+    $pass = getenv('ADMIN_PASS') ?: ($admin['senha'] ?? $GLOBALS['DEFAULT_ADMIN_PASS']);
+    return ['user' => (string)$user, 'pass' => (string)$pass];
 }
 
 function loadTwofaConfig(): array {
@@ -31,33 +51,29 @@ function saveTwofaConfig(array $cfg): bool {
 }
 
 function loadMailConfig(): array {
-    if (!file_exists(MAIL_CFG)) {
-        return [
+    $app = loadAppConfig();
+    // retrocompatibilidade: se nao houver 'mail', assume que a raiz e o config antigo
+    $mail = $app['mail'] ?? $app;
+    if (!is_array($mail) || empty($mail)) {
+        $mail = [
             'mode' => 'log',
             'from' => 'no-reply@example.com',
             'from_name' => 'Construtora Alianca'
         ];
     }
 
-    $json = file_get_contents(MAIL_CFG);
-    $data = json_decode($json, true);
-    if (!is_array($data)) $data = ['mode' => 'log'];
-
-    // ----- PRIORIDADE: variável de ambiente -----
+    // ----- PRIORIDADE: variavel de ambiente -----
     // Exemplo: export MAIL_SENHA="minhaSenha"
-    $envPass = getenv('MAIL_SENHA');
+    $envPass = getenv('MAIL_SENHA') ?: getenv('MAIL_PASSWORD');
 
     if (!empty($envPass)) {
-        $data['password'] = $envPass;
+        $mail['password'] = $envPass;
     } else {
-        // Mantém a password do mail.json se variável não existir
-        $data['password'] = $data['password'] ?? '';
+        $mail['password'] = $mail['password'] ?? '';
     }
 
-    return $data;
+    return $mail;
 }
-
-
 function sendEmailSimple(string $to, string $subject, string $body): array {
     $cfg = loadMailConfig();
     if (($cfg['mode'] ?? 'log') === 'log') {
@@ -399,7 +415,8 @@ if ($method === 'POST' && !$action) {
     $user = $_POST['user'] ?? '';
     $pass = $_POST['pass'] ?? '';
 
-    if ($user === ADMIN_USER && $pass === ADMIN_PASS) {
+    $admin = getAdminCredentials();
+    if ($user === $admin['user'] && $pass === $admin['pass']) {
         $_SESSION['is_admin'] = true;
         $_SESSION['twofa_valid'] = twofaRequired($cfg) ? false : true; // 2FA será validado na tela do admin
         if (twofaRequired($cfg) && $cfg['provider'] === 'email') {
@@ -494,6 +511,7 @@ if ($method === 'DELETE') {
 
 http_response_code(405);
 exit('method not allowed');
+
 
 
 

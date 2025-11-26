@@ -1,31 +1,33 @@
 <?php
 session_start();
 
-const DATA_DIR = __DIR__ . '/data';
+$ROOT_DIR = dirname(__DIR__);
+define('ROOT_DIR', $ROOT_DIR);
+const DATA_DIR = ROOT_DIR . '/data';
 const TFA_FILE = DATA_DIR . '/2fa-config.json';
 
-require_once __DIR__ . '/Pages/Auxiliares/obras-data.php';
+require_once ROOT_DIR . '/Pages/Auxiliares/obras-data.php';
 
 $categories = [
     'Casas'      => [
-        'imagesDir' => __DIR__ . '/images/Obras/Casas',
-        'pagesDir'  => __DIR__ . '/Pages/Casas',
+        'imagesDir' => ROOT_DIR . '/images/Obras/Casas',
+        'pagesDir'  => ROOT_DIR . '/Pages/Casas',
         'linkBase'  => 'Pages/Casas'
     ],
     'Industrias' => [
         // As imagens estao em "Industriais" enquanto as paginas ficam em "Industrias"
-        'imagesDir' => __DIR__ . '/images/Obras/Industriais',
-        'pagesDir'  => __DIR__ . '/Pages/Industrias',
+        'imagesDir' => ROOT_DIR . '/images/Obras/Industriais',
+        'pagesDir'  => ROOT_DIR . '/Pages/Industrias',
         'linkBase'  => 'Pages/Industrias'
     ],
     'Outros'     => [
-        'imagesDir' => __DIR__ . '/images/Obras/Outros',
-        'pagesDir'  => __DIR__ . '/Pages/Outros',
+        'imagesDir' => ROOT_DIR . '/images/Obras/Outros',
+        'pagesDir'  => ROOT_DIR . '/Pages/Outros',
         'linkBase'  => 'Pages/Outros'
     ],
     'Predios'    => [
-        'imagesDir' => __DIR__ . '/images/Obras/Predios',
-        'pagesDir'  => __DIR__ . '/Pages/Predios',
+        'imagesDir' => ROOT_DIR . '/images/Obras/Predios',
+        'pagesDir'  => ROOT_DIR . '/Pages/Predios',
         'linkBase'  => 'Pages/Predios'
     ],
 ];
