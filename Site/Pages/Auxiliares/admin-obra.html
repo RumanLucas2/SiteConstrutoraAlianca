@@ -90,26 +90,8 @@
     <script src="../../js/includeHeader.js"></script>
     <script src="../../js/IncludeFooter.js"></script>
     <script>
-        // Gate via token armazenado apos login (protege contra acesso direto no lado do cliente; servidor ainda precisa validar)
-        var tokenKey = 'adminToken';
-        function hasValidToken(){
-            var raw = sessionStorage.getItem(tokenKey);
-            if (!raw) return false;
-            try{
-                var payload = JSON.parse(atob(raw));
-                var maxAge = 1000 * 60 * 30; // 30 minutos
-                if (!payload.ts || (Date.now() - payload.ts) > maxAge) return false;
-                if (payload.ua && navigator.userAgent && payload.ua !== navigator.userAgent) return false;
-                return true;
-            }catch(err){
-                return false;
-            }
-        }
         function redirectHome(){
             window.location.href = '../Auxiliares/index.html';
-        }
-        if (!hasValidToken()) {
-            redirectHome();
         }
 
         var adminPage = document.getElementById('adminPage');

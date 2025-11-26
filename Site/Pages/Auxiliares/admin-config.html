@@ -150,25 +150,8 @@
     <script src="../../js/includeHeader.js"></script>
     <script src="../../js/IncludeFooter.js"></script>
     <script>
-        var tokenKey = 'adminToken';
-        function hasValidToken(){
-            var raw = sessionStorage.getItem(tokenKey);
-            if (!raw) return false;
-            try{
-                var payload = JSON.parse(atob(raw));
-                var maxAge = 1000 * 60 * 30; // 30 minutos
-                if (!payload.ts || (Date.now() - payload.ts) > maxAge) return false;
-                if (payload.ua && navigator.userAgent && payload.ua !== navigator.userAgent) return false;
-                return true;
-            }catch(err){
-                return false;
-            }
-        }
         function redirectHome(){
             window.location.href = '../Auxiliares/index.html';
-        }
-        if (!hasValidToken()) {
-            redirectHome();
         }
 
         var adminPage = document.getElementById('adminPage');
@@ -196,8 +179,6 @@
         var loadWorksBtn = document.getElementById('loadWorksBtn');
         var worksContent = document.getElementById('worksContent');
         var worksStatus = document.getElementById('worksStatus');
-        // Token front-end removido para evitar falsa seguranca; backend valida sessao/2FA
-        var adminToken = '';
 
         function showGate(){
             if (adminPage) adminPage.style.display = 'flex';
