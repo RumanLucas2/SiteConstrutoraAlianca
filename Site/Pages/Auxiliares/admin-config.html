@@ -1,0 +1,950 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="pt-br" class="ie8"> <![endif]-->
+<!--[if !IE]><!--> <html lang="pt-br"> <!--<![endif]-->
+<head>
+    <meta charset="iso-8859-1">
+    <title>Configuracoes | Construtora Alianca</title>
+    <link rel="icon" href="../../images/logo_mini.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../custom-font/fonts.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/bootsnav.css">
+    <link rel="stylesheet" type="text/css" href="../../css/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <link rel="stylesheet" href="../../css/custom.css" />
+    <style>
+        .works-list { list-style:none; padding:6px; margin:8px 0 4px 0; min-height:52px; border:1px dashed transparent; border-radius:12px; }
+        .works-list.is-empty { background:#f8f9fb; border-color:#d6dbe8; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02); }
+        .works-list li { border:1px solid #dcdcdc; border-radius:12px; padding:12px 14px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:10px; background:linear-gradient(145deg,#ffffff 0%,#f9fbff 100%); cursor:grab; transition:transform 180ms ease, box-shadow 200ms ease, opacity 160ms ease, background-color 160ms ease; box-shadow:0 12px 28px rgba(0,0,0,0.06); user-select:none; }
+        .works-list li * { user-select:none; }
+        .works-list li:hover { box-shadow:0 14px 32px rgba(0,0,0,0.12); transform:translateY(-2px) scale(1.01); }
+        .works-list li.dragging { opacity:0.48; cursor:grabbing; box-shadow:0 16px 36px rgba(0,0,0,0.20); transform:scale(0.985) rotate(-0.3deg); }
+        .works-list li.drag-over { box-shadow:0 6px 18px rgba(0,0,0,0.08); background:#ffffff; transform:translateY(1px); }
+        .works-list.drag-active li:not(.dragging) { transform:translateY(1px) scale(0.995); box-shadow:0 8px 22px rgba(0,0,0,0.06); filter:saturate(0.95); animation: settlePulse 0.9s ease-in-out infinite alternate; }
+        .works-list li .works-actions { display:flex; gap:6px; }
+        .works-list li .works-actions button { cursor:pointer; transition:transform 120ms ease, box-shadow 120ms ease, color 140ms ease; }
+        .works-list li .works-actions button:active { transform:scale(0.98); }
+        .drop-placeholder { border:1px dashed #b8c2d6; border-radius:10px; margin:6px 0 8px; background:linear-gradient(90deg,#f6f8ff,#fdfdff); height:12px; min-height:10px; transition:height 140ms ease, margin 140ms ease, background 140ms ease, box-shadow 140ms ease; box-shadow:0 4px 12px rgba(0,0,0,0.04); animation: pulsePlaceholder 1s ease-in-out infinite alternate; }
+        @keyframes pulsePlaceholder { from { opacity:0.7; } to { opacity:1; } }
+        @keyframes settlePulse { from { transform:translateY(1px) scale(0.995); } to { transform:translateY(-1px) scale(1); } }
+        .drag-ghost { pointer-events:none; opacity:0.95; padding:10px 12px; border:1px solid #ccc; background:#fff; border-radius:6px; box-shadow:0 10px 24px rgba(0,0,0,0.25); position:fixed; z-index:9999; display:flex; justify-content:space-between; align-items:center; gap:8px; width:auto; max-width:none; }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+
+    <main class="admin-setup" style="display:none;" id="adminPage">
+        <div class="admin-setup-card" id="twofaGate" style="display:none; width:100%; max-width:980px;">
+            <header class="admin-setup-head">
+                <div class="icon-wrap"><i class="fa fa-shield-alt"></i></div>
+                <div>
+                    <h2>Confirmar 2FA</h2>
+                    <p>Insira o codigo do autenticador para gerenciar configuracoes.</p>
+                </div>
+            </header>
+            <form class="admin-setup-form" id="twofaGateForm">
+                <div class="form-group">
+                    <label for="twofa-code">Codigo 2FA</label>
+                    <input id="twofa-code" name="twofa" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Ex.: 123456">
+                </div>
+                <div class="admin-setup-actions">
+                    <button type="submit" class="btn-primary">Validar</button>
+                </div>
+                <small id="twofaGateMsg" style="color:var(--red); display:none;">Codigo invalido, tente novamente.</small>
+            </form>
+        </div>
+
+        <div class="admin-setup-card" id="adminContent" style="display:none;">
+            <header class="admin-setup-head">
+                <div class="icon-wrap"><i class="fa fa-cog"></i></div>
+                <div>
+                    <h2>Configuracoes do Admin</h2>
+                    <p>Gerencie autenticacao e preferencias futuras.</p>
+                </div>
+                <a class="btn-ghost" href="./admin-obra.html" style="margin-left:auto; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fa fa-arrow-left"></i><span>Voltar</span>
+                </a>
+            </header>
+            <form class="admin-setup-form twofa-pane" id="twofaForm">
+                <div class="twofa-header">
+                    <div>
+                        <label for="twofa-provider">Tipo de autenticador</label>
+                        <select id="twofa-provider" name="provider">
+                            <option value="totp" status="">App autenticador (Google Authenticator, Authy, etc.)</option>
+                            <option value="email" status="active">Codigo por e-mail</option>
+                        </select>
+                    </div>
+                    <label class="toggle-2fa">
+                        <input id="twofa-enabled" name="enabled" type="checkbox">
+                        <span>Habilitar 2FA</span>
+                    </label>
+                </div>
+
+                <div class="twofa-grid">
+                    <div class="twofa-block">
+                        <label for="twofa-secret" id="twofa-secret-label">Chave / Codigo inicial</label>
+                        <input id="twofa-secret" name="secret" type="text" placeholder="Ex.: codigo do app autenticador" autocomplete="one-time-code">
+                        <small id="twofa-secret-help">Use a chave gerada ou um codigo unico.</small>
+                        <button type="button" class="btn-primary ghost" id="generateTotp">Gerar chave do app + QR</button>
+                        <div class="qr-wrap" id="qrWrap" style="display:none;">
+                            <div id="qrBox"></div>
+                            <small id="qrHint">Escaneie no app autenticador.</small>
+                        </div>
+                        <div class="form-group" id="contactGroup" style="display:none;">
+                            <label for="twofa-contact" id="contactLabel">Contato</label>
+                            <div class="contact-row">
+                                <input id="twofa-contact" name="contact" type="email" placeholder="" autocomplete="email">
+                                <button type="button" class="btn-primary ghost" id="contactTestBtn">Mandar teste</button>
+                            </div>
+                            <small id="contactHelp"></small>
+                        </div>
+                    </div>
+                    <div class="twofa-block">
+                        <label for="twofa-current">Codigo 2FA atual</label>
+                        <input id="twofa-current" name="current" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Codigo de 6 digitos">
+                        <small>Obrigatorio para alterar/desativar se ja estiver ativo.</small>
+                        <div class="admin-setup-actions" style="justify-content: flex-end; margin-top:12px;">
+                            <button type="submit" class="btn-primary">Salvar autenticador</button>
+                        </div>
+                    </div>
+                </div>
+                <small id="twofaStatus" style="display:block; margin-top:10px;">Use um codigo unico. Alteracoes exigem o codigo atual se o 2FA ja estiver ativo.</small>
+            </form>
+            <div class="admin-setup-card" style="margin-top:18px;" id="otherConfigs">
+                <header class="admin-setup-head">
+                    <div class="icon-wrap"><i class="fa fa-sliders-h"></i></div>
+                    <div>
+                        <h2>Outras configuracoes</h2>
+                        <p>Espaco reservado para preferencias futuras do painel.</p>
+                    </div>
+                </header>
+                <p style="margin:0;">Adicione aqui novas opcoes quando o backend estiver pronto.</p>
+            </div>
+
+            <div class="admin-setup-card" style="margin-top:18px;" id="worksManager">
+                <header class="admin-setup-head">
+                    <div class="icon-wrap"><i class="fa fa-folder-open"></i></div>
+                    <div>
+                        <h2>Gerenciar obras</h2>
+                        <p>Reordenar, renomear ou apagar obras por categoria.</p>
+                    </div>
+                    <button type="button" class="btn-primary ghost" id="loadWorksBtn">Carregar lista</button>
+                </header>
+                <div id="worksContent">
+                    <small>Use o botao acima para carregar as obras.</small>
+                </div>
+                <small id="worksStatus" style="display:block; margin-top:8px;"></small>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../../js/jquery-1.12.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/bootsnav.js"></script>
+    <script src="../../js/jquery.fancybox.js?v=2.1.5"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/includeHeader.js"></script>
+    <script src="../../js/IncludeFooter.js"></script>
+    <script>
+        var tokenKey = 'adminToken';
+        function hasValidToken(){
+            var raw = sessionStorage.getItem(tokenKey);
+            if (!raw) return false;
+            try{
+                var payload = JSON.parse(atob(raw));
+                var maxAge = 1000 * 60 * 30; // 30 minutos
+                if (!payload.ts || (Date.now() - payload.ts) > maxAge) return false;
+                if (payload.ua && navigator.userAgent && payload.ua !== navigator.userAgent) return false;
+                return true;
+            }catch(err){
+                return false;
+            }
+        }
+        function redirectHome(){
+            window.location.href = '../Auxiliares/index.html';
+        }
+        if (!hasValidToken()) {
+            redirectHome();
+        }
+
+        var adminPage = document.getElementById('adminPage');
+        var adminContent = document.getElementById('adminContent');
+        var twofaGate = document.getElementById('twofaGate');
+        var twofaGateForm = document.getElementById('twofaGateForm');
+        var twofaGateMsg = document.getElementById('twofaGateMsg');
+        var twofaForm = document.getElementById('twofaForm');
+        var twofaProvider = document.getElementById('twofa-provider');
+        var twofaEnabled = document.getElementById('twofa-enabled');
+        var twofaSecret = document.getElementById('twofa-secret');
+        var twofaCurrent = document.getElementById('twofa-current');
+        var twofaStatus = document.getElementById('twofaStatus');
+        var generateTotpBtn = document.getElementById('generateTotp');
+        var qrWrap = document.getElementById('qrWrap');
+        var qrBox = document.getElementById('qrBox');
+        var contactGroup = document.getElementById('contactGroup');
+        var contactLabel = document.getElementById('contactLabel');
+        var contactInput = document.getElementById('twofa-contact');
+        var contactHelp = document.getElementById('contactHelp');
+        var contactTestBtn = document.getElementById('contactTestBtn');
+        var secretLabel = document.getElementById('twofa-secret-label');
+        var secretHelp = document.getElementById('twofa-secret-help');
+        var secretRowElements = [generateTotpBtn, qrWrap, twofaSecret, secretLabel, secretHelp];
+        var loadWorksBtn = document.getElementById('loadWorksBtn');
+        var worksContent = document.getElementById('worksContent');
+        var worksStatus = document.getElementById('worksStatus');
+        // Token front-end removido para evitar falsa seguranca; backend valida sessao/2FA
+        var adminToken = '';
+
+        function showGate(){
+            if (adminPage) adminPage.style.display = 'flex';
+            if (twofaGate) twofaGate.style.display = 'block';
+            if (adminContent) adminContent.style.display = 'none';
+        }
+        function showContent(){
+            if (adminPage) adminPage.style.display = 'flex';
+            if (twofaGate) twofaGate.style.display = 'none';
+            if (adminContent) adminContent.style.display = 'block';
+        }
+
+        function fetchStatus(){
+            return fetch('../../auth.php?action=status').then(function(res){
+                if (!res.ok) throw new Error('auth');
+                return res.json();
+            });
+        }
+
+        function verifyTwofa(code){
+            var body = 'twofa=' + encodeURIComponent(code || '');
+            return fetch('../../auth.php?action=verify2fa', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: body
+            }).then(function(res){
+                if (!res.ok) throw new Error('invalid');
+                return res.json();
+            });
+        }
+
+        function loadServerConfig(){
+            return fetch('../../auth.php?action=config').then(function(res){
+                if (!res.ok) throw new Error('config');
+                return res.json();
+            }).then(function(cfg){
+                if (twofaProvider && cfg.provider) twofaProvider.value = cfg.provider;
+                if (twofaEnabled) twofaEnabled.checked = !!cfg.enabled;
+                updateProviderUI();
+                return cfg;
+            });
+        }
+
+        function saveServerConfig(){
+            var payload = {
+                provider: (twofaProvider && twofaProvider.value) || 'totp',
+                enabled: !!(twofaEnabled && twofaEnabled.checked),
+                secret: (twofaSecret && twofaSecret.value) || '',
+                currentCode: (twofaCurrent && twofaCurrent.value) || '',
+                contact: (contactInput && contactInput.value) || ''
+            };
+            return fetch('../../auth.php', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            }).then(function(res){
+                if (!res.ok) return res.json().then(function(j){throw j;});
+                return res.json();
+            });
+        }
+
+        fetchStatus()
+            .then(function(status){
+                if (!status.authenticated) {
+                    redirectHome();
+                    return;
+                }
+                if (!status.twofa_required || status.twofa_valid) {
+                    showContent();
+                    loadServerConfig().catch(function(){});
+                    return;
+                }
+                showGate();
+            })
+            .catch(function(){
+                redirectHome();
+            });
+
+        if (twofaGateForm) {
+            twofaGateForm.addEventListener('submit', function(e){
+                e.preventDefault();
+                if (twofaGateMsg) twofaGateMsg.style.display = 'none';
+                var code = (twofaGateForm.twofa && twofaGateForm.twofa.value) || '';
+                verifyTwofa(code).then(function(){
+                    showContent();
+                    loadServerConfig().catch(function(){});
+                }).catch(function(){
+                    if (twofaGateMsg) twofaGateMsg.style.display = 'block';
+                });
+            });
+        }
+
+        if (twofaForm) {
+            twofaForm.addEventListener('submit', function(e){
+                e.preventDefault();
+                if (twofaStatus) twofaStatus.textContent = 'Salvando...';
+                saveServerConfig().then(function(){
+                    if (twofaStatus) twofaStatus.textContent = 'Configuracao salva. Voce podera precisar validar o 2FA novamente.';
+                    if (twofaSecret) twofaSecret.value = '';
+                    if (twofaCurrent) twofaCurrent.value = '';
+                }).catch(function(err){
+                    var msg = (err && err.error) ? err.error : 'Erro ao salvar 2FA.';
+                    if (twofaStatus) twofaStatus.textContent = msg;
+                });
+            });
+        }
+
+        if (contactTestBtn) {
+            contactTestBtn.addEventListener('click', function(){
+                var provider = (twofaProvider && twofaProvider.value) || '';
+                var contact = (contactInput && contactInput.value) || '';
+                if (!provider || !contact) {
+                    if (twofaStatus) twofaStatus.textContent = 'Informe o contato antes de enviar o teste.';
+                    return;
+                }
+                twofaStatus.textContent = 'Enviando teste...';
+                fetch('../../auth.php?action=sendTest', {
+                    method:'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    body:'provider=' + encodeURIComponent(provider) + '&contact=' + encodeURIComponent(contact)
+                }).then(function(res){
+                    if (!res.ok) return res.json().then(function(j){ throw j; });
+                    return res.json();
+                }).then(function(){
+                    if (twofaStatus) twofaStatus.textContent = 'Codigo de teste gerado. Consulte o log ou a caixa de entrada.';
+                }).catch(function(err){
+                    var msg = (err && err.msg) ? err.msg : 'Falha ao enviar teste.';
+                    if (err && err.detail) msg += ' (' + err.detail + ')';
+                    if (twofaStatus) twofaStatus.textContent = 'Erro: ' + msg;
+                });
+            });
+        }
+
+        function generateRandomSecret(len){
+            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            var out = '';
+            for (var i=0;i<len;i++){
+                out += chars.charAt(Math.floor(Math.random()*chars.length));
+            }
+            return out;
+        }
+        function renderQR(data){
+            if (!qrWrap || !qrBox) return;
+            qrWrap.style.display = 'block';
+            qrBox.innerHTML = '';
+            new QRCode(qrBox, {text: data, width: 180, height: 180});
+        }
+        if (generateTotpBtn) {
+            generateTotpBtn.addEventListener('click', function(){
+                var secret = generateRandomSecret(16);
+                if (twofaSecret) twofaSecret.value = secret;
+                var label = encodeURIComponent('ConstrutoraAlianca:admin');
+                var issuer = encodeURIComponent('ConstrutoraAlianca');
+                var uri = 'otpauth://totp/' + label + '?secret=' + secret + '&issuer=' + issuer;
+                renderQR(uri);
+                if (twofaStatus) twofaStatus.textContent = 'Chave TOTP gerada. Escaneie o QR e salve as alteracoes.';
+            });
+        }
+
+        function updateProviderUI() {
+            var provider = (twofaProvider && twofaProvider.value) || 'totp';
+
+            if (twofaProvider && twofaProvider.options) {
+                Array.prototype.forEach.call(twofaProvider.options, function (opt) {
+                    if (opt.value === provider) {
+                        opt.setAttribute('status', 'active');
+                    } else {
+                        opt.setAttribute('status', '');
+                    }
+                });
+            }
+
+            switch (provider) {
+                case 'totp':
+                    if (generateTotpBtn) generateTotpBtn.style.display = 'inline-flex';
+                    if (qrWrap) qrWrap.style.display = (twofaSecret && twofaSecret.value) ? 'block' : 'none';
+                    if (contactGroup) contactGroup.style.display = 'none';
+                    if (secretLabel) secretLabel.textContent = 'Chave / Codigo inicial';
+                    if (secretHelp) secretHelp.textContent = 'Use a chave gerada ou um codigo unico.';
+                    if (twofaSecret) twofaSecret.placeholder = 'Ex.: codigo do app autenticador';
+                    secretRowElements.forEach(function(el){ if (el && el.style) el.style.display = ''; });
+                    break;
+
+                case 'email':
+                default:
+                    if (generateTotpBtn) generateTotpBtn.style.display = 'none';
+                    if (qrWrap) qrWrap.style.display = 'none';
+                    if (contactGroup) contactGroup.style.display = 'block';
+                    secretRowElements.forEach(function(el){ if (el && el.style) el.style.display = 'none'; });
+
+                    if (contactLabel) contactLabel.textContent = 'E-mail';
+                    if (contactInput) {
+                        contactInput.placeholder = 'email@exemplo.com';
+                        contactInput.type = 'email';
+                    }
+                    if (contactHelp) contactHelp.textContent = 'Informe o e-mail que recebera os codigos.';
+                    if (secretHelp) secretHelp.textContent = '';
+                    break;
+            }
+        }
+
+
+
+        if (twofaProvider) {
+            if (twofaProvider.options && twofaProvider.value) {
+                var activeOpt = Array.prototype.find
+                    ? Array.prototype.find.call(twofaProvider.options, function (opt) {
+                        return opt.getAttribute('status') === 'active';
+                    })
+                    : (function () {
+                        for (var i = 0; i < twofaProvider.options.length; i++) {
+                            if (twofaProvider.options[i].getAttribute('status') === 'active') {
+                                return twofaProvider.options[i];
+                            }
+                        }
+                        return null;
+                    })();
+
+                if (activeOpt) {
+                    twofaProvider.value = activeOpt.value;
+                }
+            }
+
+            twofaProvider.addEventListener('change', function(){
+                if (twofaSecret) twofaSecret.value = '';
+                if (contactInput) contactInput.value = '';
+                updateProviderUI();
+            });
+
+            updateProviderUI();
+        }
+
+        function renderWorks(data){
+            if (!worksContent) return;
+            if (!data || !data.categories) {
+                worksContent.innerHTML = '<small>Nenhuma obra encontrada.</small>';
+                return;
+            }
+            var html = '';
+            Object.keys(data.categories).forEach(function(cat){
+                var list = data.categories[cat] || [];
+                html += '<div class="works-cat"><h4 style="display:flex; justify-content:space-between; align-items:center;"><span>'+cat+'</span></h4>';
+                html += '<ul class="works-list'+(list.length ? '' : ' is-empty')+'" data-cat="'+cat+'">';
+                list.forEach(function(item){
+                    html += '<li data-slug="'+item.slug+'" draggable="true"><span>'+item.title+'</span>' +
+                        '<div class="works-actions">' +
+                        '<button type="button" class="btn-ghost" data-act="rename">Renomear</button>' +
+                        '<button type="button" class="btn-ghost" data-act="delete" style="color:var(--red);">Apagar</button>' +
+                        '</div></li>';
+                });
+                html += '</ul><small>'+(list.length ? 'Arraste para reordenar ou mover para outra categoria.' : 'Solte uma obra aqui para adicionar.')+'</small>';
+                html += '</div>';
+            });
+            worksContent.innerHTML = html;
+            initWorksDnD(); // <- nova linha
+        }
+
+        function setWorksStatus(msg, error){
+            if (!worksStatus) return;
+            worksStatus.style.color = error ? 'var(--red)' : 'inherit';
+            worksStatus.textContent = msg || '';
+        }
+
+        function fetchWorks(){
+            setWorksStatus('Carregando...');
+            fetch('../../obras-admin.php?action=list')
+                .then(function(res){ return res.json().then(function(j){ return {ok:res.ok, body:j};}); })
+                .then(function(resp){
+                    if (!resp.ok || !resp.body || !resp.body.ok) {
+                        setWorksStatus('Falha ao carregar lista.', true);
+                        return;
+                    }
+                    renderWorks(resp.body);
+                    setWorksStatus('Lista carregada.');
+                }).catch(function(){
+                    setWorksStatus('Erro ao carregar lista.', true);
+                });
+        }
+
+        function sendWorkAction(action, payload){
+            setWorksStatus('Salvando...');
+            return fetch('../../obras-admin.php?action=' + action, {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify(payload || {})
+            }).then(function(res){
+                return res.json().then(function(j){ return {ok: res.ok, body: j}; });
+            }).then(function(resp){
+                if (!resp.ok || !resp.body || !resp.body.ok) {
+                    var msg = (resp.body && resp.body.error) ? resp.body.error : 'Falha ao salvar.';
+                    setWorksStatus('Erro: ' + msg, true);
+                    throw new Error(msg);
+                }
+                setWorksStatus('Salvo.');
+                return resp.body;
+            }).catch(function(err){
+                setWorksStatus('Erro: ' + (err && err.message ? err.message : 'falha'), true);
+                throw err;
+            });
+        }
+
+        // ---------------- DRAG & DROP OBRAS (SIMPLES, FLUIDO E CONFIAVEL) ----------------
+        var dragState = null;
+        var hoverTarget = null;
+        var placeholder = document.createElement('li');
+        placeholder.className = 'drop-placeholder';
+        placeholder.setAttribute('draggable', 'false');
+        var worksDndBound = false;
+        var dragGhost = null;
+        var dragOffset = {x: 0, y: 0};
+
+        function setDragActive(on){
+            if (!worksContent) return;
+            var lists = worksContent.querySelectorAll('.works-list');
+            for (var i = 0; i < lists.length; i++) {
+                if (on) {
+                    lists[i].classList.add('drag-active');
+                } else {
+                    lists[i].classList.remove('drag-active');
+                }
+            }
+        }
+
+        function setPlaceholderHeightFrom(li){
+            // Placeholder mais compacto para evitar "buraco" visual
+            placeholder.style.height = '12px';
+        }
+
+        function destroyGhost(){
+            if (dragGhost && dragGhost.parentNode) {
+                dragGhost.parentNode.removeChild(dragGhost);
+            }
+            dragGhost = null;
+        }
+
+        function updateGhostPosition(e){
+            if (!dragGhost || e == null) return;
+            var x = (e.clientX || 0) - (dragOffset.x || 0) + 6;
+            var y = (e.clientY || 0) - (dragOffset.y || 0) + 6;
+            dragGhost.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        }
+
+        function createGhost(li, e){
+            destroyGhost();
+            if (!li) return;
+            var rect = li.getBoundingClientRect();
+            dragOffset.x = e ? (e.clientX - rect.left) : rect.width / 2;
+            dragOffset.y = e ? (e.clientY - rect.top) : rect.height / 2;
+            var g = li.cloneNode(true);
+            g.classList.add('dragging');
+            g.style.position = 'fixed';
+            g.style.pointerEvents = 'none';
+            g.style.left = '0';
+            g.style.top = '0';
+            g.style.margin = '0';
+            g.style.width = rect.width + 'px';
+            g.style.zIndex = '9999';
+            g.style.opacity = '0.92';
+            g.classList.add('drag-ghost');
+            document.body.appendChild(g);
+            dragGhost = g;
+            updateGhostPosition(e);
+        }
+
+        function handleListClick(e){
+            var target = e.target;
+            if (!target || !target.dataset || !target.dataset.act) return;
+            var li = target.closest('li');
+            var ul = target.closest('ul');
+            if (!li || !ul) return;
+            var slug = li.getAttribute('data-slug');
+            var cat = ul.getAttribute('data-cat');
+            if (!slug || !cat) return;
+
+            var act = target.dataset.act;
+            if (act === 'rename') {
+                var span = li.querySelector('span');
+                var currentName = span ? (span.textContent || '') : '';
+                var newName = prompt('Novo nome da obra:', currentName);
+                if (!newName) return;
+                sendWorkAction('rename', {tipo: cat, slug: slug, name: newName}).then(fetchWorks);
+                return;
+            }
+
+            if (act === 'delete') {
+                if (!confirm('Apagar esta obra?')) return;
+                sendWorkAction('delete', {tipo: cat, slug: slug}).then(fetchWorks);
+            }
+        }
+
+        if (loadWorksBtn) {
+            loadWorksBtn.addEventListener('click', fetchWorks);
+        }
+        if (worksContent) {
+            worksContent.addEventListener('click', handleListClick);
+        }
+
+        function cleanPlaceholder(){
+            if (placeholder.parentNode) {
+                placeholder.parentNode.removeChild(placeholder);
+            }
+        }
+
+        function computeOrder(ul){
+            var order = [];
+            if (!ul) return order;
+            var els = ul.querySelectorAll('li[data-slug]');
+            for (var i = 0; i < els.length; i++) {
+                order.push(els[i].getAttribute('data-slug'));
+            }
+            return order;
+        }
+
+        function handleDragStart(e){
+            var li = e.target.closest('li[draggable]');
+            if (!li) return;
+            var ul = li.closest('.works-list');
+            if (!ul) return;
+
+            dragState = {
+                slug: li.getAttribute('data-slug'),
+                cat: ul.getAttribute('data-cat'),
+                li: li,
+                sourceUl: ul,
+                mode: 'html5'
+            };
+
+            setPlaceholderHeightFrom(li);
+            ul.insertBefore(placeholder, li);
+            li.classList.add('dragging');
+            createGhost(li, e);
+            setDragActive(true);
+
+            if (e.dataTransfer) {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', dragState.slug || '');
+            }
+        }
+
+        function findTargetList(e){
+            var ul = e.target.closest('.works-list');
+            if (!ul && placeholder.parentNode && placeholder.parentNode.classList && placeholder.parentNode.classList.contains('works-list')) {
+                ul = placeholder.parentNode;
+            }
+            return ul;
+        }
+
+        function getAfterElement(ul, y){
+            var candidates = ul.querySelectorAll('li[data-slug]:not(.dragging)');
+            for (var i = 0; i < candidates.length; i++) {
+                var item = candidates[i];
+                if (item === placeholder) continue;
+                var rect = item.getBoundingClientRect();
+                if (y < rect.top + rect.height / 2) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        function handleDragOver(e){
+            if (!dragState) return;
+            var ul = findTargetList(e);
+            if (!ul) return;
+            e.preventDefault();
+            if (e.dataTransfer) {
+                e.dataTransfer.dropEffect = 'move';
+            }
+
+            var after = getAfterElement(ul, e.clientY);
+
+            updateGhostPosition(e);
+
+            if (hoverTarget && hoverTarget !== after) {
+                hoverTarget.classList.remove('drag-over');
+            }
+            if (after) {
+                hoverTarget = after;
+                after.classList.add('drag-over');
+                ul.insertBefore(placeholder, after);
+            } else {
+                hoverTarget = null;
+                ul.appendChild(placeholder);
+            }
+        }
+
+        function handleDrop(e){
+            if (!dragState) return;
+            e.preventDefault();
+
+            var targetUl = findTargetList(e) || dragState.sourceUl;
+            var sourceUl = dragState.sourceUl;
+            var sourceCat = dragState.cat;
+            var slug = dragState.slug;
+
+            if (hoverTarget) {
+                hoverTarget.classList.remove('drag-over');
+            }
+
+            if (!targetUl || !slug) {
+                cancelDrag();
+                return;
+            }
+
+            if (placeholder.parentNode !== targetUl) {
+                targetUl.appendChild(placeholder);
+            }
+            targetUl.insertBefore(dragState.li, placeholder);
+            cleanPlaceholder();
+            dragState.li.classList.remove('dragging');
+            destroyGhost();
+            if (!targetUl.querySelector('li[data-slug]')) {
+                targetUl.classList.add('is-empty');
+            } else {
+                targetUl.classList.remove('is-empty');
+            }
+            if (sourceUl && !sourceUl.querySelector('li[data-slug]')) {
+                sourceUl.classList.add('is-empty');
+            }
+
+            var targetCat = targetUl.getAttribute('data-cat');
+            var sourceOrder = computeOrder(sourceUl);
+            var targetOrder = computeOrder(targetUl);
+
+            if (targetCat === sourceCat) {
+                sendWorkAction('reorder', { tipo: targetCat, order: targetOrder });
+            } else {
+                sendWorkAction('move', { tipo: sourceCat, from: sourceCat, to: targetCat, slug: slug })
+                    .then(function(){
+                        if (sourceOrder.length) {
+                            sendWorkAction('reorder', { tipo: sourceCat, order: sourceOrder });
+                        }
+                        if (targetOrder.length) {
+                            sendWorkAction('reorder', { tipo: targetCat, order: targetOrder });
+                        }
+                    })
+                    .then(fetchWorks)
+                    .catch(function(){});
+            }
+
+            dragState = null;
+            hoverTarget = null;
+            setDragActive(false);
+        }
+
+        function cancelDrag(){
+            if (!dragState) return;
+            if (placeholder.parentNode && dragState.li) {
+                placeholder.parentNode.insertBefore(dragState.li, placeholder);
+                cleanPlaceholder();
+            } else if (dragState.sourceUl && dragState.li && !dragState.li.parentNode) {
+                dragState.sourceUl.appendChild(dragState.li);
+            }
+            if (dragState.li) {
+                dragState.li.classList.remove('dragging');
+            }
+            if (hoverTarget) {
+                hoverTarget.classList.remove('drag-over');
+            }
+            destroyGhost();
+            hoverTarget = null;
+            dragState = null;
+            setDragActive(false);
+        }
+
+        function handleDragEnd(){
+            cancelDrag();
+        }
+
+        // Pointer-based fallback (para navegadores que bloqueiam drag nativo)
+        function locateListFromPoint(e){
+            var el = document.elementFromPoint(e.clientX, e.clientY);
+            return el ? el.closest('.works-list') : null;
+        }
+
+        function startPointerDrag(e){
+            if (e.button !== 0) return;
+            var li = e.target.closest ? e.target.closest('.works-list li') : null;
+            if (!li || e.target.closest('.works-actions')) return;
+            var ul = li.closest('.works-list');
+            if (!ul) return;
+
+            dragState = {
+                slug: li.getAttribute('data-slug'),
+                cat: ul.getAttribute('data-cat'),
+                li: li,
+                sourceUl: ul,
+                mode: 'pointer',
+                pointerId: e.pointerId
+            };
+
+            if (li.setPointerCapture) {
+                try { li.setPointerCapture(e.pointerId); } catch(err){}
+            }
+
+            setPlaceholderHeightFrom(li);
+            ul.insertBefore(placeholder, li);
+            li.classList.add('dragging');
+            createGhost(li, e);
+            setDragActive(true);
+            e.preventDefault();
+        }
+
+        function movePointerDrag(e){
+            if (!dragState || dragState.mode !== 'pointer') return;
+            if (dragState.pointerId != null && e.pointerId !== dragState.pointerId) return;
+            var ul = locateListFromPoint(e) || dragState.sourceUl;
+            if (!ul) return;
+            e.preventDefault();
+            var after = getAfterElement(ul, e.clientY);
+            updateGhostPosition(e);
+            if (hoverTarget && hoverTarget !== after) {
+                hoverTarget.classList.remove('drag-over');
+            }
+            if (after) {
+                hoverTarget = after;
+                after.classList.add('drag-over');
+                ul.insertBefore(placeholder, after);
+            } else {
+                hoverTarget = null;
+                ul.appendChild(placeholder);
+            }
+        }
+
+        function endPointerDrag(e){
+            if (!dragState || dragState.mode !== 'pointer') return;
+            if (dragState.pointerId != null && e.pointerId !== dragState.pointerId) return;
+            e.preventDefault();
+
+            var ul = locateListFromPoint(e) || dragState.sourceUl;
+            var sourceUl = dragState.sourceUl;
+            var sourceCat = dragState.cat;
+            var slug = dragState.slug;
+
+            if (hoverTarget) {
+                hoverTarget.classList.remove('drag-over');
+            }
+
+            if (!ul || !slug) {
+                cancelDrag();
+                return;
+            }
+
+            if (placeholder.parentNode !== ul) {
+                ul.appendChild(placeholder);
+            }
+            ul.insertBefore(dragState.li, placeholder);
+            cleanPlaceholder();
+            dragState.li.classList.remove('dragging');
+            destroyGhost();
+            if (!ul.querySelector('li[data-slug]')) {
+                ul.classList.add('is-empty');
+            } else {
+                ul.classList.remove('is-empty');
+            }
+            if (sourceUl && !sourceUl.querySelector('li[data-slug]')) {
+                sourceUl.classList.add('is-empty');
+            }
+
+            var targetCat = ul.getAttribute('data-cat');
+            var sourceOrder = computeOrder(sourceUl);
+            var targetOrder = computeOrder(ul);
+
+            if (targetCat === sourceCat) {
+                sendWorkAction('reorder', { tipo: targetCat, order: targetOrder });
+            } else {
+                sendWorkAction('move', { tipo: sourceCat, from: sourceCat, to: targetCat, slug: slug })
+                    .then(function(){
+                        if (sourceOrder.length) {
+                            sendWorkAction('reorder', { tipo: sourceCat, order: sourceOrder });
+                        }
+                        if (targetOrder.length) {
+                            sendWorkAction('reorder', { tipo: targetCat, order: targetOrder });
+                        }
+                    })
+                    .then(fetchWorks)
+                    .catch(function(){});
+            }
+
+            dragState = null;
+            hoverTarget = null;
+            setDragActive(false);
+        }
+
+        // Inicializa drag & drop em todas as listas/itens apos renderizar
+        function initWorksDnD(){
+            dragState = null;
+            hoverTarget = null;
+            cleanPlaceholder();
+            if (!worksContent) return;
+
+            var items = worksContent.querySelectorAll('.works-list li');
+            for (var i = 0; i < items.length; i++) {
+                items[i].setAttribute('draggable', 'true');
+                items[i].draggable = true;
+                items[i].removeEventListener('dragstart', handleDragStart);
+                items[i].removeEventListener('dragend', handleDragEnd);
+                items[i].addEventListener('dragstart', handleDragStart);
+                items[i].addEventListener('dragend', handleDragEnd);
+                items[i].removeEventListener('pointerdown', startPointerDrag);
+                items[i].addEventListener('pointerdown', startPointerDrag);
+            }
+
+            var lists = worksContent.querySelectorAll('.works-list');
+            for (var j = 0; j < lists.length; j++) {
+                var ul = lists[j];
+                if (ul.querySelector('li[data-slug]')) {
+                    ul.classList.remove('is-empty');
+                } else {
+                    ul.classList.add('is-empty');
+                }
+                ul.removeEventListener('dragover', handleDragOver);
+                ul.removeEventListener('dragenter', handleDragOver);
+                ul.removeEventListener('drop', handleDrop);
+                ul.addEventListener('dragover', handleDragOver);
+                ul.addEventListener('dragenter', handleDragOver);
+                ul.addEventListener('drop', handleDrop);
+            }
+
+            if (!worksDndBound) {
+                // Captura para garantir dragstart mesmo que parta de filhos
+                worksContent.addEventListener('dragstart', handleDragStart, true);
+                worksContent.addEventListener('dragover', handleDragOver);
+                worksContent.addEventListener('dragenter', handleDragOver);
+                worksContent.addEventListener('drop', handleDrop);
+                worksContent.addEventListener('dragend', handleDragEnd);
+                // Garantia extra: marcar draggable no down
+                worksContent.addEventListener('mousedown', function(ev){
+                    var li = ev.target && ev.target.closest ? ev.target.closest('.works-list li') : null;
+                    if (li) {
+                        li.draggable = true;
+                    }
+                });
+                // Pointer fallback para browsers que bloqueiam drag nativo
+                document.addEventListener('pointermove', movePointerDrag);
+                document.addEventListener('pointerup', endPointerDrag);
+                document.addEventListener('pointercancel', endPointerDrag);
+                worksDndBound = true;
+            }
+        }
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+

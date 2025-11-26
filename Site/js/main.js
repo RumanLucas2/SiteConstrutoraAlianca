@@ -35,6 +35,36 @@ jQuery(document).ready(function ($) {
 //==========================================
 
     $('.fancybox').fancybox();
+
+//==========================================
+// Ajuste de hover: overlay apenas na imagem
+//==========================================
+
+    (function wrapGridImages(){
+        document.querySelectorAll('.grid .grid-item').forEach(function(item){
+            if (item.querySelector('.thumb')) {
+                return;
+            }
+
+            var img = item.querySelector('img');
+            if (!img) {
+                return;
+            }
+
+            var hover = item.querySelector('.portfolio_hover_area');
+            var clickable = img.closest('a') || img;
+            var parent = clickable.parentNode;
+            var wrapper = document.createElement('div');
+            wrapper.className = 'thumb';
+
+            parent.insertBefore(wrapper, clickable);
+            wrapper.appendChild(clickable);
+
+            if (hover && !wrapper.contains(hover)) {
+                wrapper.appendChild(hover);
+            }
+        });
+    })();
     
     
 

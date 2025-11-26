@@ -1,0 +1,30 @@
+{
+    "Casas": [
+        "Golfe_01",
+        "Pinheiros_01",
+        "Duas_Marias",
+        "Golfe_02",
+        "HelvetiaPark_02",
+        "JardimPanorama",
+        "Paradiso",
+        "HelvetiaPark",
+        "Pinheiros_02",
+        "Pinheiros_03",
+        "Schanadu",
+        "Terracota",
+        "Brescia"
+    ],
+    "Industrias": [
+        "CampneusIndaiatubaRevitalizacao",
+        "CriGeo"
+    ],
+    "Predios": [
+        "Juliana_Gruber",
+        "Ana_Maria",
+        "Palazzo",
+        "Margarida_Racca"
+    ],
+    "Outros": [
+        "AreadeLazerResidencialJardimToscana"
+    ]
+}

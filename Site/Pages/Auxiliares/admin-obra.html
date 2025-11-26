@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="pt-br" class="ie8"> <![endif]-->
+<!--[if !IE]><!--> <html lang="pt-br"> <!--<![endif]-->
+<head>
+    <meta charset="iso-8859-1">
+    <title>Admin | Construtora Alian&ccedil;a</title>
+    <link rel="icon" href="../../images/logo_mini.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../custom-font/fonts.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/bootsnav.css">
+    <link rel="stylesheet" type="text/css" href="../../css/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <link rel="stylesheet" href="../../css/custom.css" />
+</head>
+<body>
+    <div id="header"></div>
+
+    <main class="admin-setup" style="display:none;" id="adminPage">
+        <div class="admin-setup-card" id="twofaGate" style="display:none; width:100%; max-width:980px;">
+            <header class="admin-setup-head">
+                <div class="icon-wrap"><i class="fa fa-shield-alt"></i></div>
+                <div>
+                    <h2>Confirmar 2FA</h2>
+                    <p>Insira o código do autenticador para acessar o painel.</p>
+                </div>
+            </header>
+            <form class="admin-setup-form" id="twofaGateForm">
+                <div class="form-group">
+                    <label for="twofa-code">Código 2FA</label>
+                    <input id="twofa-code" name="twofa" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Ex.: 123456">
+                </div>
+                <div class="admin-setup-actions">
+                    <button type="submit" class="btn-primary">Validar</button>
+                </div>
+                <small id="twofaGateMsg" style="color:var(--red); display:none;">Código inválido, tente novamente.</small>
+            </form>
+        </div>
+
+        <div class="admin-setup-card" id="adminContent" style="display:none;">
+            <header class="admin-setup-head">
+                <div class="icon-wrap"><i class="fa fa-folder-plus"></i></div>
+                <div>
+                    <h2>Nova Obra</h2>
+                    <p>Escolha o tipo, envie as fotos e nomeie o projeto.</p>
+                </div>
+                <a class="btn-ghost" href="./admin-config.html" style="margin-left:auto; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fa fa-cog"></i><span>Configurações</span>
+                </a>
+            </header>
+            <form class="admin-setup-form" id="obraForm">
+                <div class="form-group">
+                    <label for="tipo">Tipo de obra</label>
+                    <select id="tipo" name="tipo">
+                        <option value="Casas">Casa</option>
+                        <option value="Industrias">Ind&uacute;stria</option>
+                        <option value="Predios">Pr&eacute;dio</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fotos">Fotos (1 a 32 imagens)</label>
+                    <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
+                    <small>Arraste ou selecione imagens (at&eacute; 32). A primeira com &ldquo;capa&rdquo; no nome vira a capa.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nomeie a obra</label>
+                    <input id="nome" name="nome" type="text" placeholder="Ex.: Jardim Panorama" maxlength="80">
+                </div>
+
+                <div class="admin-setup-actions">
+                    <button type="button" class="btn-ghost" onclick="window.history.back()">Voltar</button>
+                    <button type="submit" class="btn-primary">Salvar e publicar</button>
+                </div>
+                <small id="obraStatus" style="display:block; margin-top:8px;"></small>
+            </form>
+        </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../../js/jquery-1.12.1.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/bootsnav.js"></script>
+    <script src="../../js/jquery.fancybox.js?v=2.1.5"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/includeHeader.js"></script>
+    <script src="../../js/IncludeFooter.js"></script>
+    <script>
+        // Gate via token armazenado apos login (protege contra acesso direto no lado do cliente; servidor ainda precisa validar)
+        var tokenKey = 'adminToken';
+        function hasValidToken(){
+            var raw = sessionStorage.getItem(tokenKey);
+            if (!raw) return false;
+            try{
+                var payload = JSON.parse(atob(raw));
+                var maxAge = 1000 * 60 * 30; // 30 minutos
+                if (!payload.ts || (Date.now() - payload.ts) > maxAge) return false;
+                if (payload.ua && navigator.userAgent && payload.ua !== navigator.userAgent) return false;
+                return true;
+            }catch(err){
+                return false;
+            }
+        }
+        function redirectHome(){
+            window.location.href = '../Auxiliares/index.html';
+        }
+        if (!hasValidToken()) {
+            redirectHome();
+        }
+
+        var adminPage = document.getElementById('adminPage');
+        var adminContent = document.getElementById('adminContent');
+        var twofaGate = document.getElementById('twofaGate');
+        var twofaGateForm = document.getElementById('twofaGateForm');
+        var twofaGateMsg = document.getElementById('twofaGateMsg');
+
+        function showGate(){
+            if (adminPage) adminPage.style.display = 'flex';
+            if (twofaGate) twofaGate.style.display = 'block';
+            if (adminContent) adminContent.style.display = 'none';
+        }
+        function showContent(){
+            if (adminPage) adminPage.style.display = 'flex';
+            if (twofaGate) twofaGate.style.display = 'none';
+            if (adminContent) adminContent.style.display = 'block';
+        }
+
+        function fetchStatus(){
+            return fetch('../../auth.php?action=status').then(function(res){
+                if (!res.ok) throw new Error('auth');
+                return res.json();
+            });
+        }
+
+        function verifyTwofa(code){
+            var body = 'twofa=' + encodeURIComponent(code || '');
+            return fetch('../../auth.php?action=verify2fa', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: body
+            }).then(function(res){
+                if (!res.ok) throw new Error('invalid');
+                return res.json();
+            });
+        }
+
+        fetchStatus()
+            .then(function(status){
+                if (!status.authenticated) {
+                    redirectHome();
+                    return;
+                }
+                if (!status.twofa_required || status.twofa_valid) {
+                    showContent();
+                    return;
+                }
+                showGate();
+            })
+            .catch(function(){
+                redirectHome();
+            });
+
+        if (twofaGateForm) {
+            twofaGateForm.addEventListener('submit', function(e){
+                e.preventDefault();
+                if (twofaGateMsg) twofaGateMsg.style.display = 'none';
+                var code = (twofaGateForm.twofa && twofaGateForm.twofa.value) || '';
+                verifyTwofa(code).then(function(){
+                    showContent();
+                }).catch(function(){
+                    if (twofaGateMsg) twofaGateMsg.style.display = 'block';
+                });
+            });
+        }
+
+        const obraForm = document.getElementById('obraForm');
+        const obraStatus = document.getElementById('obraStatus');
+        const nomeInput = document.getElementById('nome');
+        const tipoSelect = document.getElementById('tipo');
+        const fotosInput = document.getElementById('fotos');
+        let sending = false;
+
+        function setStatus(msg, isError, allowHtml){
+            if (!obraStatus) return;
+            obraStatus.style.color = isError ? 'var(--red)' : 'inherit';
+            if (allowHtml) {
+                obraStatus.innerHTML = msg || '';
+            } else {
+                obraStatus.textContent = msg || '';
+            }
+        }
+
+        if (obraForm) {
+            obraForm.addEventListener('submit', function(e){
+                e.preventDefault();
+                if (sending) return;
+
+                const files = fotosInput && fotosInput.files ? fotosInput.files.length : 0;
+                if (!files) {
+                    setStatus('Envie ao menos uma foto.', true);
+                    return;
+                }
+                if (files > 32) {
+                    setStatus('Limite de 32 fotos por obra.', true);
+                    return;
+                }
+                const nome = nomeInput ? nomeInput.value.trim() : '';
+                if (!nome) {
+                    setStatus('Informe o nome da obra.', true);
+                    return;
+                }
+
+                const fd = new FormData();
+                fd.append('tipo', tipoSelect ? (tipoSelect.value || '') : '');
+                fd.append('nome', nome);
+                for (var i = 0; i < (fotosInput.files ? fotosInput.files.length : 0); i++) {
+                    fd.append('fotos[]', fotosInput.files[i]);
+                }
+                sending = true;
+                setStatus('Enviando e publicando...');
+
+                fetch('../../obra.php', {
+                    method: 'POST',
+                    body: fd
+                }).then(function(res){
+                    return res.json().then(function(j){ return { ok: res.ok, body: j }; });
+                }).then(function(resp){
+                    sending = false;
+                    if (!resp.ok || !resp.body || !resp.body.ok) {
+                        const msg = (resp.body && resp.body.error) ? resp.body.error : 'Falha ao salvar obra.';
+                        setStatus('Erro: ' + msg, true);
+                        return;
+                    }
+                    var linkHtml = resp.body.page ? ' <a href=\"../../' + resp.body.page + '\" target=\"_blank\">Ver pagina</a>' : '';
+                    setStatus('Obra publicada com sucesso!' + linkHtml, false, true);
+                    if (obraForm) obraForm.reset();
+                }).catch(function(){
+                    sending = false;
+                    setStatus('Erro ao conectar. Tente novamente.', true);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+

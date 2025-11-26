@@ -1,2 +1,6 @@
 {
+    "User" : {
+        "UserName" : "admin",
+        "PassWord" : "senhaSegura123"
+    }
 }

@@ -1,0 +1,10 @@
+{
+  "mode": "smtp",
+  "host": "construtoraalianca.com.br",
+  "port": 465,
+  "security": "ssl",
+  "username": "no-reply@construtoraalianca.com.br",
+  "password": "KP)*4HTP&ckB",
+  "from": "no-reply@construtoraalianca.com.br",
+  "from_name": "Construtora Alianca"
+}
