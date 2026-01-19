@@ -116,23 +116,15 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const user = (form.user && form.user.value || '').trim();
             const pass = (form.pass && form.pass.value) || '';
-            fetch('../../Admin/auth.php', {
+            fetch('/Admin/auth.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'user=' + encodeURIComponent(user) + '&pass=' + encodeURIComponent(pass)
-            }).then(function(res){
-                if (res.ok) {
-                    try {
-                        var payload = { ts: Date.now(), ua: navigator.userAgent };
-                        sessionStorage.setItem('adminToken', btoa(JSON.stringify(payload)));
-                    } catch(err) {}
-                    window.location.href = "../Auxiliares/admin-obra.html";
-                    return;
-                }
-                alert('Login invalido');
-            }).catch(function(){
-                alert('Erro ao conectar. Tente novamente.');
-            });
+            }).then(async (res) => {
+                const txt = await res.text();
+                if (res.ok) { window.location.href = "admin-obra.html"; return; }
+                alert(`Falhou (${res.status}): ${txt}`);
+            }).catch(() => alert('Erro ao conectar. Tente novamente.'));
         });
     }
 

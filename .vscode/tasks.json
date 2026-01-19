@@ -3,8 +3,8 @@
   "tasks": [
     {
       "label": "start-php-server",
-      "type": "shell",
-      "command": "php",
+      "type": "process",
+      "command": "D:\\php\\php.exe",
       "args": [
         "-S",
         "127.0.0.1:8081",
@@ -14,14 +14,11 @@
       "isBackground": true,
       "problemMatcher": {
         "owner": "php-server",
-        "pattern": {
-          "regexp": "^(.*)$",
-          "message": 1
-        },
+        "pattern": [{ "regexp": "^(.*)$", "message": 1 }],
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "Development Server started",
-          "endsPattern": "Development Server started"
+          "beginsPattern": "Development Server .* started|Listening on http://127\\.0\\.0\\.1:8081",
+          "endsPattern": "Development Server .* started|Listening on http://127\\.0\\.0\\.1:8081"
         }
       }
     }

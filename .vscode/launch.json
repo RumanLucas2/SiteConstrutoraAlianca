@@ -6,7 +6,7 @@
       "name": "Launch Brave (Auto Server)",
       "request": "launch",
       "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
-      "url": "http://localhost:8081/Pages/Auxiliares/Casas.php",
+      "url": "http://127.0.0.1:8081/Pages/Auxiliares/Casas.php",
       "webRoot": "${workspaceFolder}/Site",
       "preLaunchTask": "start-php-server"
     }

@@ -4,7 +4,9 @@ session_start();
 $ROOT_DIR = dirname(__DIR__);
 define('ROOT_DIR', $ROOT_DIR);
 $DEFAULT_ADMIN_USER = 'admin';
-$DEFAULT_ADMIN_PASS = 'senhaSegura123';
+$DEFAULT_ADMIN_PASS = '010510';
+
+
 const DATA_DIR   = ROOT_DIR . '/data';
 const TFA_FILE   = DATA_DIR . '/2fa-config.json';
 const LOG_FILE   = DATA_DIR . '/notifications.log';
