@@ -270,7 +270,7 @@ function updateProviderUI() {
         contactInput.placeholder = 'email@exemplo.com';
         contactInput.type = 'email';
       }
-      if (contactHelp) contactHelp.textContent = 'Informe o e-mail que recebera os codigos.';
+      if (contactHelp) contactHelp.textContent = 'Informe o e-mail que receberá os códigos.';
       if (secretHelp) secretHelp.textContent = '';
       break;
   }

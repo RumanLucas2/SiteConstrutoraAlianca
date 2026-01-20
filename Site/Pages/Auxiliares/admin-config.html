@@ -3,7 +3,7 @@
 <!--[if !IE]><!--> <html lang="pt-br"> <!--<![endif]-->
 <head>
     <meta charset="iso-8859-1">
-    <title>Configuracoes | Construtora Alianca</title>
+    <title>configura&ccedil;&otilde;es | Construtora Alian&ccedil;a</title>
     <link rel="icon" href="../../../images/logo_mini.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../../custom-font/fonts.css" />
@@ -41,18 +41,18 @@
                 <div class="icon-wrap"><i class="fa fa-shield-alt"></i></div>
                 <div>
                     <h2>Confirmar 2FA</h2>
-                    <p>Insira o codigo do autenticador para gerenciar configuracoes.</p>
+                    <p>Insira o C&oacute;digo do autenticador para gerenciar configura&ccedil;&otilde;es.</p>
                 </div>
             </header>
             <form class="admin-setup-form" id="twofaGateForm">
                 <div class="form-group">
-                    <label for="twofa-code">Codigo 2FA</label>
+                    <label for="twofa-code">C&oacute;digo 2FA</label>
                     <input id="twofa-code" name="twofa" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Ex.: 123456">
                 </div>
                 <div class="admin-setup-actions">
                     <button type="submit" class="btn-primary">Validar</button>
                 </div>
-                <small id="twofaGateMsg" style="color:var(--red); display:none;">Codigo invalido, tente novamente.</small>
+                <small id="twofaGateMsg" style="color:var(--red); display:none;">C&oacute;digo inv&aacute;lido, tente novamente.</small>
             </form>
         </div>
 
@@ -60,8 +60,8 @@
             <header class="admin-setup-head">
                 <div class="icon-wrap"><i class="fa fa-cog"></i></div>
                 <div>
-                    <h2>Configuracoes do Admin</h2>
-                    <p>Gerencie autenticacao e preferencias futuras.</p>
+                    <h2>Configura&ccedil;&otilde;es do Admin</h2>
+                    <p>Gerencie autentica&ccedil;&atilde;o e prefer&ecirc;ncias futuras.</p>
                 </div>
                 <a class="btn-ghost" href="./admin-obra.html" style="margin-left:auto; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
                     <i class="fa fa-arrow-left"></i><span>Voltar</span>
@@ -73,7 +73,7 @@
                         <label for="twofa-provider">Tipo de autenticador</label>
                         <select id="twofa-provider" name="provider">
                             <option value="totp" status="">App autenticador (Google Authenticator, Authy, etc.)</option>
-                            <option value="email" status="active">Codigo por e-mail</option>
+                            <option value="email" status="active">C&oacute;digo por e-mail</option>
                         </select>
                     </div>
                     <label class="toggle-2fa">
@@ -84,9 +84,9 @@
 
                 <div class="twofa-grid">
                     <div class="twofa-block">
-                        <label for="twofa-secret" id="twofa-secret-label">Chave / Codigo inicial</label>
-                        <input id="twofa-secret" name="secret" type="text" placeholder="Ex.: codigo do app autenticador" autocomplete="one-time-code">
-                        <small id="twofa-secret-help">Use a chave gerada ou um codigo unico.</small>
+                        <label for="twofa-secret" id="twofa-secret-label">Chave / C&oacute;digo inicial</label>
+                        <input id="twofa-secret" name="secret" type="text" placeholder="Ex.: C&oacute;digo do app autenticador" autocomplete="one-time-code">
+                        <small id="twofa-secret-help">Use a chave gerada ou um C&oacute;digo &uacute;nico.</small>
                         <button type="button" class="btn-primary ghost" id="generateTotp">Gerar chave do app + QR</button>
                         <div class="qr-wrap" id="qrWrap" style="display:none;">
                             <div id="qrBox"></div>
@@ -102,25 +102,25 @@
                         </div>
                     </div>
                     <div class="twofa-block">
-                        <label for="twofa-current">Codigo 2FA atual</label>
-                        <input id="twofa-current" name="current" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Codigo de 6 digitos">
+                        <label for="twofa-current">C&oacute;digo 2FA atual</label>
+                        <input id="twofa-current" name="current" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="C&oacute;digo de 6 digitos">
                         <small>Obrigatorio para alterar/desativar se ja estiver ativo.</small>
                         <div class="admin-setup-actions" style="justify-content: flex-end; margin-top:12px;">
                             <button type="submit" class="btn-primary">Salvar autenticador</button>
                         </div>
                     </div>
                 </div>
-                <small id="twofaStatus" style="display:block; margin-top:10px;">Use um codigo unico. Alteracoes exigem o codigo atual se o 2FA ja estiver ativo.</small>
+                <small id="twofaStatus" style="display:block; margin-top:10px;">Use um c&oacute;digo &uacute;nico. Altera&ccedil;&otilde;es exigem o c&oacute;digo atual se o 2FA j&aacute; estiver ativo.</small>
             </form>
             <div class="admin-setup-card" style="margin-top:18px;" id="otherConfigs">
                 <header class="admin-setup-head">
                     <div class="icon-wrap"><i class="fa fa-sliders-h"></i></div>
                     <div>
-                        <h2>Outras configuracoes</h2>
-                        <p>Espaco reservado para preferencias futuras do painel.</p>
+                        <h2>Outras configura&ccedil;&otilde;es</h2>
+                        <p>Espa&ccedil;o reservado para prefer&ecirc;ncias futuras do painel.</p>
                     </div>
                 </header>
-                <p style="margin:0;">Adicione aqui novas opcoes quando o backend estiver pronto.</p>
+                <p style="margin:0;">Adicione aqui novas op&ccedil;&otilde;es quando o backend estiver pronto.</p>
             </div>
 
             <div class="admin-setup-card" style="margin-top:18px;" id="worksManager">
@@ -133,7 +133,7 @@
                     <button type="button" class="btn-primary ghost" id="loadWorksBtn">Carregar lista</button>
                 </header>
                 <div id="worksContent">
-                    <small>Use o botao acima para carregar as obras.</small>
+                    <small>Use o bot&atilde;o acima para carregar as obras.</small>
                 </div>
                 <small id="worksStatus" style="display:block; margin-top:8px;"></small>
             </div>

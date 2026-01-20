@@ -55,7 +55,7 @@ fetchStatus()
             return;
         }
         if (!status.twofa_required || status.twofa_valid) {
-            alert(status.twofa_required + ' and ' + status.twofa_valid);
+            //alert(status.twofa_required + ' and ' + status.twofa_valid);
             showContent();
             return;
         }
