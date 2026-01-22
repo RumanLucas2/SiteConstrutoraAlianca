@@ -63,12 +63,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div id="adminModal" class="admin-modal" aria-hidden="true">
         <div class="admin-card">
-            <h4>Área Administrativa</h4>
+            <h4>&Aacute;rea Administrativa</h4>
             <p>Acesso restrito. Informe suas credenciais.</p>
             <form class="admin-form">
                 <div>
                     <label for="admin-user">Login</label>
-                    <input id="admin-user" name="user" type="text" autocomplete="username" placeholder="Seu usuário">
+                    <input id="admin-user" name="user" type="text" autocomplete="username" placeholder="Seu usu&aacute;rio">
                 </div>
                 <div>
                     <label for="admin-pass">Senha</label>
